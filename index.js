@@ -1,9 +1,26 @@
 import { tweetsData } from "./data.js";
 
+document.addEventListener("click", (e) => {
+  if (e.target.dataset.like) {
+    handleLikeClick(e.target.dataset.like);
+  }
+});
+
+function handleLikeClick(tweetId) {
+  const targetTweetObj = tweetsData.filter(
+    (tweet) => tweet.uuid === tweetId
+  )[0];
+
+	targetTweetObj.isLiked ? targetTweetObj.likes-- : targetTweetObj.likes++;
+	targetTweetObj.isLiked = !targetTweetObj.isLiked
+
+  renderHtml();
+}
+
 function getFeedHtml() {
-	let feedHtml = "";
-	tweetsData.forEach((tweet) => {
-		feedHtml +=`
+  let feedHtml = "";
+  tweetsData.forEach((tweet) => {
+    feedHtml += `
 		<div class="tweet">
 			<div class="tweet-inner">
 				<img src="${tweet.profilePic}" class="profile-pic">
@@ -25,16 +42,14 @@ function getFeedHtml() {
 							</span>
 						</div>   
 				</div>            
-			</div>"
+			</div>
 		</div>`;
-
-	})
-return feedHtml
+  });
+  return feedHtml;
 }
 
 function renderHtml() {
-	document.getElementById("feed").innerHTML = getFeedHtml()
+  document.getElementById("feed").innerHTML = getFeedHtml();
 }
 
-renderHtml()
-
+renderHtml();
