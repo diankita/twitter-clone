@@ -3,6 +3,8 @@ import { tweetsData } from "./data.js";
 document.addEventListener("click", (e) => {
   if (e.target.dataset.like) {
     handleLikeClick(e.target.dataset.like);
+  } else if (e.target.dataset.retweet) {
+    handleRetweetClick(e.target.dataset.retweet);
   }
 });
 
@@ -11,8 +13,20 @@ function handleLikeClick(tweetId) {
     (tweet) => tweet.uuid === tweetId
   )[0];
 
-	targetTweetObj.isLiked ? targetTweetObj.likes-- : targetTweetObj.likes++;
-	targetTweetObj.isLiked = !targetTweetObj.isLiked
+  targetTweetObj.isLiked ? targetTweetObj.likes-- : targetTweetObj.likes++;
+  targetTweetObj.isLiked = !targetTweetObj.isLiked;
+
+  renderHtml();
+}
+
+function handleRetweetClick(tweetId) {
+  const targetTweetObj = tweetsData.filter(
+    (tweet) => tweet.uuid === tweetId
+  )[0];
+  targetTweetObj.isRetweeted
+    ? targetTweetObj.retweets--
+    : targetTweetObj.retweets++;
+  targetTweetObj.isRetweeted = !targetTweetObj.isRetweeted;
 
   renderHtml();
 }
@@ -45,6 +59,7 @@ function getFeedHtml() {
 			</div>
 		</div>`;
   });
+
   return feedHtml;
 }
 
