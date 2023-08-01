@@ -29,3 +29,9 @@ function getFeedHtml() {
 return feedHtml
 }
 
+function renderHtml() {
+	document.getElementById("feed").innerHTML = getFeedHtml()
+}
+
+renderHtml()
+
