@@ -1,4 +1,5 @@
 import { tweetsData } from "./data.js";
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 document.addEventListener("click", (e) => {
   if (e.target.dataset.like) {
@@ -6,8 +7,10 @@ document.addEventListener("click", (e) => {
   } else if (e.target.dataset.retweet) {
     handleRetweetClick(e.target.dataset.retweet);
   } else if (e.target.dataset.reply) {
-		handleReplyClick(e.target.dataset.reply)
-	}
+    handleReplyClick(e.target.dataset.reply);
+  } else if (e.target.id === "tweet-btn") {
+    handleTweetBtnClick();
+  }
 });
 
 function handleLikeClick(tweetId) {
@@ -34,8 +37,10 @@ function handleRetweetClick(tweetId) {
 }
 
 function handleReplyClick(tweetId) {
-	document.getElementById(`replies-${tweetId}`).classList.toggle("hidden");
+  document.getElementById(`replies-${tweetId}`).classList.toggle("hidden");
 }
+
+function handleTweetBtnClick() {}
 
 function getFeedHtml() {
   let feedHtml = "";
@@ -44,7 +49,7 @@ function getFeedHtml() {
     let likeClass = "";
     let retweetClass = "";
     let repliesHtml = "";
-		
+
     tweet.isLiked ? (likeClass = "liked") : likeClass;
     tweet.isRetweeted ? (retweetClass = "retweeted") : retweetClass;
 
