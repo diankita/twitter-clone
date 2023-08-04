@@ -40,7 +40,27 @@ function handleReplyClick(tweetId) {
   document.getElementById(`replies-${tweetId}`).classList.toggle("hidden");
 }
 
-function handleTweetBtnClick() {}
+function handleTweetBtnClick() {
+  const tweetInputText = document.getElementById("tweet-input-text");
+
+  if (tweetInputText.value) {
+    const newTweetObj = {
+      handle: `@diii`,
+      profilePic: `images/scrimbalogo.png`,
+      likes: 0,
+      retweets: 0,
+      tweetText: tweetInputText.value,
+      replies: [],
+      isLiked: false,
+      isRetweeted: false,
+      uuid: uuidv4(),
+    };
+    tweetsData.unshift(newTweetObj);
+
+    renderHtml();
+    tweetInputText.value = "";
+  }
+}
 
 function getFeedHtml() {
   let feedHtml = "";
