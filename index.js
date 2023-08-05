@@ -10,6 +10,8 @@ document.addEventListener("click", (e) => {
     handleReplyClick(e.target.dataset.reply);
   } else if (e.target.id === "tweet-btn") {
     handleTweetBtnClick();
+  } else if (e.target.dataset.replyButton) {
+    handleReplyBtnClick(e.target.dataset.replyButton);
   }
 });
 
@@ -59,6 +61,30 @@ function handleTweetBtnClick() {
 
     renderHtml();
     tweetInputText.value = "";
+  }
+}
+
+function handleReplyBtnClick(tweetId) {
+  const targetTweetObj = tweetsData.filter(
+    (tweet) => tweet.uuid === tweetId
+  )[0];
+
+  const replyInputText = document.getElementById(`reply-input-text-${tweetId}`);
+
+  if (replyInputText.value) {
+    const newReplyObj = {
+      handle: `@diii`,
+      profilePic: `images/scrimbalogo.png`,
+      tweetText: replyInputText.value,
+    };
+    console.log(newReplyObj);
+    console.log(targetTweetObj.replies);
+
+    targetTweetObj.replies.unshift(newReplyObj);
+
+    renderHtml();
+    replyInputText.value = "";
+    document.getElementById(`replies-${tweetId}`).classList.toggle("hidden");
   }
 }
 
@@ -112,6 +138,11 @@ function getFeedHtml() {
 				</div>            
 			</div>
 			<div class="hidden" id="replies-${tweet.uuid}">
+      				<div class="tweet-reply">
+
+        <textarea id="reply-input-text-${tweet.uuid}" class="smaller" placeholder="Write your reply"></textarea>
+        <button data-reply-button="${tweet.uuid}" id="reply-btn-${tweet.uuid}" class="smaller">Reply</button>
+        </div>
 				${repliesHtml}
 			</div>
 		</div>`;
