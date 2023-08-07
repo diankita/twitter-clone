@@ -12,6 +12,8 @@ document.addEventListener("click", (e) => {
     handleTweetBtnClick();
   } else if (e.target.dataset.replyButton) {
     handleReplyBtnClick(e.target.dataset.replyButton);
+  } else if (e.target.dataset.deleteTweet) {
+    handleDeleteTweetClick(e.target.dataset.deleteTweet);
   }
 });
 
@@ -77,8 +79,6 @@ function handleReplyBtnClick(tweetId) {
       profilePic: `images/scrimbalogo.png`,
       tweetText: replyInputText.value,
     };
-    console.log(newReplyObj);
-    console.log(targetTweetObj.replies);
 
     targetTweetObj.replies.unshift(newReplyObj);
 
@@ -88,19 +88,32 @@ function handleReplyBtnClick(tweetId) {
   }
 }
 
+function handleDeleteTweetClick(tweetId) {
+  const targetTweetObj = tweetsData.filter(
+    (tweet) => tweet.uuid === tweetId
+  )[0];
+  tweetsData.splice(targetTweetObj, 1);
+  renderHtml();
+}
+
+
 function getFeedHtml() {
   let feedHtml = "";
 
   tweetsData.forEach((tweet) => {
+    let repliesHtml = "";
+
     let likeClass = "";
     let retweetClass = "";
-    let repliesHtml = "";
+    let deleteTweetClass = "";
 
     tweet.isLiked ? (likeClass = "liked") : likeClass;
     tweet.isRetweeted ? (retweetClass = "retweeted") : retweetClass;
+    tweet.handle === "@diii" ? deleteTweetClass : (deleteTweetClass = "hidden");
 
     if (tweet.replies) {
       tweet.replies.forEach((reply) => {
+
         repliesHtml += `
 				<div class="tweet-reply">
     			<div class="tweet-inner">
@@ -134,14 +147,16 @@ function getFeedHtml() {
 								<i class="fa-solid fa-retweet ${retweetClass}" data-retweet="${tweet.uuid}"></i>
 								${tweet.retweets}
 							</span>
+              <span class="tweet-detail ${deleteTweetClass}">
+								<i class="fa-solid fa-trash-can" data-delete-tweet="${tweet.uuid}"></i>
+							</span>
 						</div>   
 				</div>            
 			</div>
 			<div class="hidden" id="replies-${tweet.uuid}">
-      				<div class="tweet-reply">
-
-        <textarea id="reply-input-text-${tweet.uuid}" class="smaller" placeholder="Write your reply"></textarea>
-        <button data-reply-button="${tweet.uuid}" id="reply-btn-${tweet.uuid}" class="smaller">Reply</button>
+      	<div class="tweet-reply">
+          <textarea id="reply-input-text-${tweet.uuid}" class="smaller" placeholder="Write your reply"></textarea>
+          <button data-reply-button="${tweet.uuid}" class="smaller">Reply</button>
         </div>
 				${repliesHtml}
 			</div>
