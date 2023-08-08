@@ -14,6 +14,11 @@ document.addEventListener("click", (e) => {
     handleReplyBtnClick(e.target.dataset.replyButton);
   } else if (e.target.dataset.deleteTweet) {
     handleDeleteTweetClick(e.target.dataset.deleteTweet);
+  } else if (e.target.dataset.deleteReply) {
+    handleDeleteReplyClick(
+      e.target.dataset.parentTweet,
+      e.target.dataset.deleteReply
+    );
   }
 });
 
@@ -78,6 +83,7 @@ function handleReplyBtnClick(tweetId) {
       handle: `@diii`,
       profilePic: `images/scrimbalogo.png`,
       tweetText: replyInputText.value,
+      replyUuid: uuidv4(),
     };
 
     targetTweetObj.replies.unshift(newReplyObj);
@@ -96,6 +102,20 @@ function handleDeleteTweetClick(tweetId) {
   renderHtml();
 }
 
+function handleDeleteReplyClick(parentTweetId, replyId) {
+  const targetTweetObj = tweetsData.find(
+    (tweet) => tweet.uuid === parentTweetId
+  );
+  const targetReplyObj = targetTweetObj.replies.find(
+    (reply) => reply.replyUuid === replyId
+  );
+
+  targetTweetObj.replies.splice(targetReplyObj, 1);
+  renderHtml();
+  document
+    .getElementById(`replies-${parentTweetId}`)
+    .classList.toggle("hidden");
+}
 
 function getFeedHtml() {
   let feedHtml = "";
@@ -113,6 +133,10 @@ function getFeedHtml() {
 
     if (tweet.replies) {
       tweet.replies.forEach((reply) => {
+        let deleteReplyClass = "";
+        reply.handle === "@diii"
+          ? deleteReplyClass
+          : (deleteReplyClass = "hidden");
 
         repliesHtml += `
 				<div class="tweet-reply">
@@ -121,6 +145,11 @@ function getFeedHtml() {
             <div>
 							<p class="handle">${reply.handle}</p>
 							<p class="tweet-text">${reply.tweetText}</p>
+              <div class="tweet-details">
+                <span class="reply-detail ${deleteReplyClass}">
+                  <i class="fa-solid fa-trash-can" data-parent-tweet="${tweet.uuid}" data-delete-reply="${reply.replyUuid}"></i>
+                </span>
+              </div>
             </div>
         	</div>
 				</div>`;

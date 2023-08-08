@@ -78,14 +78,6 @@ button {
   font-weight: 600;
 }
 
-#delete-btn {
-  background-color: white;
-  color: darkred;
-  font-size: 12px;
-  padding: 0;
-  text-align: start;
-}
-
 /* tweet */
 
 .tweet {
