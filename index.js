@@ -98,7 +98,9 @@ function handleDeleteTweetClick(tweetId) {
   const targetTweetObj = tweetsData.filter(
     (tweet) => tweet.uuid === tweetId
   )[0];
-  tweetsData.splice(targetTweetObj, 1);
+
+  const indexToRemove = tweetsData.indexOf(targetTweetObj);
+  tweetsData.splice(indexToRemove, 1);
   renderHtml();
 }
 
@@ -110,8 +112,10 @@ function handleDeleteReplyClick(parentTweetId, replyId) {
     (reply) => reply.replyUuid === replyId
   );
 
-  targetTweetObj.replies.splice(targetReplyObj, 1);
+  const indexToRemove = targetTweetObj.replies.indexOf(targetReplyObj);
+  targetTweetObj.replies.splice(indexToRemove, 1);  
   renderHtml();
+  
   document
     .getElementById(`replies-${parentTweetId}`)
     .classList.toggle("hidden");
