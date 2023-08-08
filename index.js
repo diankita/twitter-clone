@@ -23,9 +23,9 @@ document.addEventListener("click", (e) => {
 });
 
 function handleLikeClick(tweetId) {
-  const targetTweetObj = tweetsData.filter(
+  const targetTweetObj = tweetsData.find(
     (tweet) => tweet.uuid === tweetId
-  )[0];
+  );
 
   targetTweetObj.isLiked ? targetTweetObj.likes-- : targetTweetObj.likes++;
   targetTweetObj.isLiked = !targetTweetObj.isLiked;
@@ -34,9 +34,9 @@ function handleLikeClick(tweetId) {
 }
 
 function handleRetweetClick(tweetId) {
-  const targetTweetObj = tweetsData.filter(
+  const targetTweetObj = tweetsData.find(
     (tweet) => tweet.uuid === tweetId
-  )[0];
+  );
   targetTweetObj.isRetweeted
     ? targetTweetObj.retweets--
     : targetTweetObj.retweets++;
@@ -72,9 +72,9 @@ function handleTweetBtnClick() {
 }
 
 function handleReplyBtnClick(tweetId) {
-  const targetTweetObj = tweetsData.filter(
+  const targetTweetObj = tweetsData.find(
     (tweet) => tweet.uuid === tweetId
-  )[0];
+  );
 
   const replyInputText = document.getElementById(`reply-input-text-${tweetId}`);
 
@@ -95,9 +95,9 @@ function handleReplyBtnClick(tweetId) {
 }
 
 function handleDeleteTweetClick(tweetId) {
-  const targetTweetObj = tweetsData.filter(
+  const targetTweetObj = tweetsData.find(
     (tweet) => tweet.uuid === tweetId
-  )[0];
+  );
 
   const indexToRemove = tweetsData.indexOf(targetTweetObj);
   tweetsData.splice(indexToRemove, 1);
